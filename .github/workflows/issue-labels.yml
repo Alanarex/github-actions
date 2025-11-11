@@ -23,12 +23,19 @@ jobs:
               return;
             }
 
-            // Parse issue type
+            // Parse issue type: look for known issue type keywords (robust against different rendering)
+            const allowedTypes = ['feature','bug','chore','docs','enhancement','refactor','test','perf','security'];
             let issueType = 'feature';
-            const typeMatch = body.match(/### Issue Type\s*\n.*?\n\n(.+)/s);
+            const typeRegex = new RegExp('\\b(' + allowedTypes.join('|') + ')\\b', 'i');
+            const typeMatch = body.match(typeRegex);
             if (typeMatch) {
-              const typeValue = typeMatch[1].trim().split('\n')[0];
-              issueType = typeValue.toLowerCase();
+              issueType = typeMatch[1].toLowerCase();
+            }
+
+            // If parsed value isn't one of the allowed types, ignore it and fall back to default
+            if (!allowedTypes.includes(issueType)) {
+              console.log(`Parsed issueType \"${issueType}\" is not a known type; falling back to 'feature'`);
+              issueType = 'feature';
             }
 
             // Parse version
@@ -86,12 +93,14 @@ jobs:
               }
             }
 
+            // Sanitize issueType into a label
+            const sanitizedType = issueType.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').substring(0, 50);
             // Apply labels to issue
             await github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue.number,
-              labels: [issueType, version]
+              labels: [sanitizedType, version]
             });
 
             console.log(`✅ Applied labels: ${issueType}, ${version}`);

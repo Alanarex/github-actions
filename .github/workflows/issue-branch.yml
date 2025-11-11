@@ -33,12 +33,19 @@ jobs:
               return { skip: true, createBranch: false };
             }
 
-            // Parse issue type
+            // Parse issue type: look for a known type keyword in the body (more robust than relying on heading formatting)
+            const allowedTypes = ['feature','bug','chore','docs','enhancement','refactor','test','perf','security'];
             let issueType = 'feature';
-            const typeMatch = body.match(/### Issue Type\s*\n.*?\n\n(.+)/s);
+            const typeRegex = new RegExp('\\b(' + allowedTypes.join('|') + ')\\b', 'i');
+            const typeMatch = body.match(typeRegex);
             if (typeMatch) {
-              const typeValue = typeMatch[1].trim().split('\n')[0];
-              issueType = typeValue.toLowerCase();
+              issueType = typeMatch[1].toLowerCase();
+            }
+
+            // If parsed value isn't one of the allowed types, ignore it and fall back to default
+            if (!allowedTypes.includes(issueType)) {
+              console.log(`Parsed issueType \"${issueType}\" is not a known type; falling back to 'feature'`);
+              issueType = 'feature';
             }
 
             // Parse version
@@ -64,7 +71,8 @@ jobs:
               if (extracted) issueTitle = extracted;
             }
 
-            // Generate branch name
+            // Sanitize issueType and title into URL-safe slugs
+            issueType = issueType.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').substring(0, 50);
             const slug = issueTitle.toLowerCase()
               .replace(/[^\w\s-]/g, '')
               .replace(/\s+/g, '-')

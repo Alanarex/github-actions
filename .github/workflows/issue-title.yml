@@ -23,15 +23,22 @@ jobs:
               return;
             }
 
-            // Parse issue type
+            // Parse issue type: detect a known keyword in the body
+            const allowedTypes = ['feature','bug','chore','docs','enhancement','refactor','test','perf','security'];
             let issueType = 'feature';
-            const typeMatch = body.match(/### Issue Type\s*\n.*?\n\n(.+)/s);
+            const typeRegex = new RegExp('\\b(' + allowedTypes.join('|') + ')\\b', 'i');
+            const typeMatch = body.match(typeRegex);
             if (typeMatch) {
-              const typeValue = typeMatch[1].trim().split('\n')[0];
-              issueType = typeValue.toLowerCase();
+              issueType = typeMatch[1].toLowerCase();
             }
 
-            // Parse issue title
+            // If parsed value isn't one of the allowed types, ignore it and fall back to default
+            if (!allowedTypes.includes(issueType)) {
+              console.log(`Parsed issueType \"${issueType}\" is not a known type; falling back to 'feature'`);
+              issueType = 'feature';
+            }
+
+            // Parse issue title: prefer the GitHub title; fall back to an 'Issue Title' body section if present
             let issueTitle = issue.title.replace(/^\[.*?\]\s*/, '').trim();
             const titleMatch = body.match(/### Issue Title\s*\n.*?\n\n(.+)/s);
             if (titleMatch) {
