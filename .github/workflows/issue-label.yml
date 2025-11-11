@@ -1,0 +1,68 @@
+name: Apply labels to new issues
+on:
+    issues:
+        types: [opened]
+
+permissions:
+    issues: write
+
+jobs:
+    label-issue:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Apply version/type labels
+              uses: actions/github-script@v6
+              with:
+                  script: |
+                      const issue = context.payload.issue;
+                      let version = 'v1.0.0';
+                      let type = 'feature';
+
+                      // Parse version from various formats
+                      // Look for version in backticks, standalone, or after "Version" keyword
+                      const versionPatterns = [
+                        /`(v[0-9]+\.[0-9]+\.[0-9]+)`/i,  // in backticks: `v1.0.0`
+                        /\bv[0-9]+\.[0-9]+\.[0-9]+\b/i,  // standalone: v1.0.0
+                        /version:?\s*(v[0-9]+\.[0-9]+\.[0-9]+)/i,  // after "Version": v1.0.0
+                        /\*\*Version\*\*.*?\n.*?(v[0-9]+\.[0-9]+\.[0-9]+)/i  // under Version header
+                      ];
+                      
+                      for (const pattern of versionPatterns) {
+                        const match = issue.body.match(pattern);
+                        if (match) {
+                          version = match[1] || match[0];
+                          if (!version.startsWith('v')) version = 'v' + version;
+                          break;
+                        }
+                      }
+
+                      // Parse checked issue type from checkbox format
+                      const typeOptions = ['feature', 'bug', 'chore', 'docs', 'enhancement', 'refactor', 'test', 'perf', 'security'];
+                      for (const option of typeOptions) {
+                        const checkedPattern = new RegExp(`- \\[x\\]\\s+${option}`, 'i');
+                        if (checkedPattern.test(issue.body)) {
+                          type = option;
+                          break;
+                        }
+                      }
+
+                      // Apply labels
+                      await github.rest.issues.addLabels({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: issue.number,
+                        labels: [version, type]
+                      });
+
+                      // Suggest branch name in comment
+                      const slug = issue.title.toLowerCase()
+                        .replace(/[^\w\s-]/g, '')
+                        .replace(/\s+/g, '-');
+                      const branchName = `release/${version}/${type}/${slug}`;
+
+                      await github.rest.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: issue.number,
+                        body: 'Suggested branch name: `' + branchName + '`'
+                      });
