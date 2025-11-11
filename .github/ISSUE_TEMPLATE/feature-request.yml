@@ -1,0 +1,106 @@
+name: "[Feature] Feature Request"
+description: Request a new feature or enhancement
+title: "[Feature] "
+labels: ["feature"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to request a new feature! Please fill out the information below to help us understand your request.
+
+  - type: dropdown
+    id: feature-type
+    attributes:
+      label: Feature Type
+      description: What type of feature are you requesting?
+      options:
+        - New functionality
+        - Enhancement to existing feature
+        - UI/UX improvement
+        - Performance improvement
+        - Developer experience
+        - Integration
+        - API enhancement
+        - Security feature
+        - Accessibility improvement
+        - Documentation feature
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Target Version
+      description: Which version should this feature be included in?
+      placeholder: "v1.0.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Feature Description
+      description: Provide a clear and detailed description of the feature you're requesting
+      placeholder: "Describe the feature you would like to see implemented..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case / Problem Statement
+      description: Explain the problem this feature would solve or the use case it addresses
+      placeholder: "What problem does this feature solve? How would it be used?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: If you have ideas on how this feature should work, please describe them
+      placeholder: "How do you envision this feature working?"
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative Solutions
+      description: Have you considered any alternative solutions or workarounds?
+      placeholder: "What other solutions have you considered?"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How important is this feature to you?
+      options:
+        - Low - Nice to have
+        - Medium - Would be helpful
+        - High - Important for my workflow
+        - Critical - Blocking my work
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: additional-options
+    attributes:
+      label: Additional Options
+      options:
+        - label: Create branch automatically
+          required: false
+        - label: Assign to me directly
+          required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context, screenshots, mockups, or examples that would help explain this feature request
+      placeholder: "Any additional information that might be helpful..."
+    validations:
+      required: false
