@@ -1,0 +1,53 @@
+name: Bug report
+about: Create a report to help us identify and fix a bug
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Bug report
+        Please fill out the form below to report a bug.
+
+  - type: input
+    id: issue-title
+    attributes:
+      label: Issue Title
+      description: A short summary of the bug
+      placeholder: "e.g., Crash when saving settings"
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Describe the steps to reproduce the bug
+      placeholder: |
+        1. Go to...
+        2. Click...
+        3. Observe...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: What you expected to happen
+      placeholder: "Describe expected behavior"
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual behavior
+      description: What actually happened
+      placeholder: "Describe observed behavior"
+
+  - type: checkboxes
+    id: repro
+    attributes:
+      label: Reproducibility
+      options:
+        - label: "Always"
+        - label: "Sometimes"
+        - label: "Unable to reproduce"

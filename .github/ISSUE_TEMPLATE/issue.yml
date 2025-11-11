@@ -1,6 +1,5 @@
 name: Issue
-description: Create an issue for any type of work
-title: ""
+about: Create an issue for any type of work
 labels: []
 body:
   - type: markdown

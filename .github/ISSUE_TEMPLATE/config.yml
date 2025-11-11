@@ -1,0 +1,7 @@
+# GitHub Issue Template configuration
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-issue-and-pull-request-templates
+blank_issues_enabled: false
+contact_links:
+  - name: Support
+    url: https://example.com/support
+    about: For repository issues and support
