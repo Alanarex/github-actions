@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        ## General Issue Template
+        ## Issue Template
         Use this template to create a work item or task. The branch name will be automatically generated based on your selections.
         
         Choose an issue type and provide enough detail so maintainers can pick it up.
@@ -40,15 +40,6 @@ body:
       required: true
       pattern: "^v\\d+\\.\\d+\\.\\d+$"
 
-  - type: input
-    id: issue-title
-    attributes:
-      label: Issue Title
-      description: A clear and concise title for this issue
-      placeholder: "e.g., Add user authentication system"
-    validations:
-      required: true
-
   - type: textarea
     id: description
     attributes:
@@ -56,12 +47,7 @@ body:
       description: Provide a detailed description of the issue
       placeholder: "Describe what needs to be done, the problem to solve, or the feature to implement..."
     validations:
-      required: true
-
-  - type: markdown
-    attributes:
-      value: |
-        **Options:** Check the boxes below to enable these features.
+      required: false
 
   - type: checkboxes
     id: create-branch
@@ -86,10 +72,3 @@ body:
         - [ ] Criterion 1
         - [ ] Criterion 2
         - [ ] Criterion 3
-
-  - type: textarea
-    id: additional-context
-    attributes:
-      label: Additional Context (Optional)
-      description: Add any other context, screenshots, or information about the issue
-      placeholder: "Any additional information..."
