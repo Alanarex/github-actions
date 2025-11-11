@@ -1,5 +1,5 @@
 name: General Issue
-about: Create a work item or task for any type of work (updated description)
+description: Create a work item or task for any type of work (updated description)
 labels: []
 body:
   - type: markdown

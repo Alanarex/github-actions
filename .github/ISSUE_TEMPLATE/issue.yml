@@ -1,5 +1,5 @@
 name: DEPRECATED - Old Issue Template (do not use)
-about: Deprecated. Use `General Issue` template instead.
+description: Deprecated. Use `General Issue` template instead.
 labels: [wontfix]
 body:
   - type: markdown
@@ -8,3 +8,12 @@ body:
         ## DEPRECATED TEMPLATE
         This template has been deprecated and replaced by `General Issue`.
         Please use `General Issue` instead.
+
+  - type: input
+    id: deprecated-confirmation
+    attributes:
+      label: I confirm
+      description: This template is deprecated; use `General Issue` instead.
+      placeholder: "Optional acknowledgement"
+    validations:
+      required: false
