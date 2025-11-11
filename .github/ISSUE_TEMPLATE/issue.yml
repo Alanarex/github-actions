@@ -1,12 +1,12 @@
-name: General Issue
-description: Create a general issue for any type of work
-title: "[TYPE] "
+name: Issue
+description: Create an issue for any type of work
+title: ""
 labels: []
 body:
   - type: markdown
     attributes:
       value: |
-        ## General Issue Template
+        ## Issue Template
         Fill out the form below to create an issue. The branch name will be automatically generated based on your selections.
         
         ### Issue Type Descriptions:
